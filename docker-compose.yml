@@ -1,0 +1,30 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend/supermercado-frontend-react  # Dockerfile del frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - inventario
+    container_name: frontend
+
+  inventario:
+    build: ./backend/supermercado-inventario  # Dockerfile del microservicio de inventario
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/supermarket
+    depends_on:
+      - mongo
+    container_name: inventario
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    container_name: mongodb
+
+volumes:
+  mongo-data:
