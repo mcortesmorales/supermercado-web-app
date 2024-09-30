@@ -17,15 +17,38 @@ def product(product_id):
 
 @app.route('/product', methods=['POST'])
 def create_product():
-    product_data = request.json
-    product_id = add_product(product_data)
-    return jsonify({'id': str(product_id.inserted_id)}), 201
+    data = request.get_json()  # Obtiene los datos del producto desde la solicitud
+    new_product = {
+        'name': data['name'],
+        'price': data['price'],
+        'description': data.get('description', ''),  # Opcional
+        'stock': data['stock']
+    }
+    result = add_product(new_product)  # Inserta el producto en MongoDB
+
+    # Agrega el id generado por MongoDB al producto
+    new_product['_id'] = str(result.inserted_id)
+
+    # Responde con el producto recién creado
+    return jsonify(new_product), 201
+
 
 @app.route('/product/<string:product_id>', methods=['PUT'])
 def update_product_route(product_id):
     product_data = request.json
-    update_product(ObjectId(product_id), product_data)
-    return jsonify({'message': 'Product updated'}), 200
+
+    new_product = {
+        'name': product_data['name'],
+        'price': product_data['price'],
+        'description': product_data.get('description', ''),  # Opcional
+        'stock': product_data['stock']
+    }
+
+    result = update_product(ObjectId(product_id), new_product)
+
+    new_product['_id'] = product_id
+
+    return jsonify(new_product), 200
 
 @app.route('/product/<string:product_id>', methods=['DELETE'])
 def delete_product_route(product_id):

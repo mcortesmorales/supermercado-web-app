@@ -1,29 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import ProductList from './components/ProductList';
-import ProductDetail from './components/ProductDetail';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import CatalogPage from './pages/catalogo-prueba';
+import InventoryPage from './pages/InventoryPage';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Obtener los productos desde el microservicio
-  useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
-  }, []);
-
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
-  };
-
   return (
-    <div className="App">
-      <h1>Supermarket Catalog</h1>
-      <ProductList products={products} onProductClick={handleProductClick} />
-      {selectedProduct && <ProductDetail product={selectedProduct} />}
-    </div>
+    <Router>
+      <div className="App">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="container-fluid">
+            <Link className="navbar-brand" to="/">Supermarket</Link>
+            <div className="collapse navbar-collapse">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">Catalogo</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/inventory">Gestión de Inventario</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div className="container mt-4">
+          <Routes>
+            <Route path="/" element={<CatalogPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
