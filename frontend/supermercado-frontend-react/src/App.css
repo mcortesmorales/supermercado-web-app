@@ -1,38 +1,71 @@
-.App {
+/* Estilos para el componente ProductList */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  gap: 15px; /* Espacio más pequeño entre los productos */
+  padding: 0;
+  list-style-type: none;
+}
+
+.product-item {
+  cursor: pointer;
+  transition: transform 0.2s ease;
   text-align: center;
+  font-size: 0.9em; /* Hace el texto más pequeño */
+}
+.add-to-cart {
+  background-color: #4CAF50; /* Color de fondo verde */
+  color: white; /* Color de texto blanco */
+  border: none; /* Sin borde */
+  padding: 10px 15px; /* Espaciado interno */
+  text-align: center; /* Centrar el texto */
+  text-decoration: none; /* Sin subrayado */
+  display: inline-block; /* Hace que el botón sea un bloque en línea */
+  font-size: 0.9em; /* Tamaño de fuente más pequeño */
+  margin-top: 10px; /* Espacio entre el precio y el botón */
+  cursor: pointer; /* Cambia el cursor a mano */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, transform 0.3s; /* Transición suave */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.product-item:hover {
+  transform: scale(1.03); /* Un ligero aumento al pasar el cursor */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.product-image {
+  max-width: 80%; /* Reduce el tamaño de la imagen */
+  height: auto;
+  margin-bottom: 8px; /* Espacio más pequeño entre imagen y nombre */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.product-info {
+  font-size: 1.5 em; /* Texto más pequeño para la información del producto */
 }
 
-.App-link {
-  color: #61dafb;
+.product-name {
+  font-size: 1.1em; /* Ajusta el tamaño del nombre */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.product-price {
+  font-size: 1.3em;
+  font-weight: bold; /* Precio en negrita */
+  margin-top: 3px; /* Espacio más pequeño entre nombre y precio */
 }
+.centered {
+  text-align: center; /* Centra el texto */
+}
+.category-filter {
+  display: flex; /* Usar flexbox */
+  align-items: center; /* Alinear verticalmente en el centro */
+  justify-content: flex-start; /* Alinear horizontalmente a la izquierda */
+  margin: 20px; /* Ajusta el margen según sea necesario */
+}
+
+.category-filter label {
+  margin-right: 10px; /* Espacio entre la etiqueta y el selector */
+}
+
+.category-filter select {
+  padding: 5px; /* Espaciado interno del selector */
+}
+

@@ -7,7 +7,6 @@ function ProductDetail({ product }) {
         <h5 className="card-title">{product.name}</h5>
         <h6 className="card-subtitle mb-2 text-muted">${product.price}</h6>
         <p className="card-text">{product.description}</p>
-        <p className="card-text"><strong>Stock:</strong> {product.stock}</p>
       </div>
     </div>
   );

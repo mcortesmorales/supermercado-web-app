@@ -54,3 +54,10 @@ def update_product_route(product_id):
 def delete_product_route(product_id):
     delete_product(ObjectId(product_id))
     return jsonify({'message': 'Product deleted'}), 200
+
+@app.route('/products/category/<string:category>', methods=['GET'])
+def get_products_by_category(category):
+    # Filtrar los productos por categoría usando una consulta en MongoDB
+    products = mongo.db.products.find({"category": category})
+    products_list = [product for product in products]  # Convertir a lista
+    return jsonify(products_list), 200

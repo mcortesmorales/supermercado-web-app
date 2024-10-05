@@ -1,0 +1,64 @@
+.home {
+    width: 100%;
+    height: 60vh; /* Ajusta la altura de la imagen de portada */
+    display: flex;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-size: cover; /* Asegura que la imagen cubra el contenedor */
+    background-position: center; /* Centra la imagen en el contenedor */
+    margin-bottom: 50px;
+  }
+  
+  .headerContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: flex-start; /* Cambia a flex-start para mover el contenido a la izquierda */
+    padding-left: 150px; /* Ajusta el espacio a la izquierda */
+    padding-top: 100px;
+    flex-direction: column; /* Asegúrate de que esto esté presente */
+    align-items: flex-start;
+  }
+  
+  .headerContainer .content {
+    text-align: left; /* Alinea el texto a la izquierda */
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente detrás del texto */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .headerContainer h1 {
+    font-size: 3em;
+    font-weight: bold;
+  }
+  
+  .headerContainer p {
+    font-style: bold;
+    text-align-last: center;
+    font-size: 2em;
+    margin: 10px 0;
+  }
+  
+  .headerContainer button {
+    color: white;
+    background-color: #ff9900;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 10px;
+    margin-left: 150px;
+
+  }
+  
+  .headerContainer button:hover {
+    background-color: #cc7a00;
+    transition: 0.3s ease-in;
+  }
+  
+  
