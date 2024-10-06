@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function InventoryPage() {
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({ name: '', price: '', description: '', stock: '' });
+  const [newProduct, setNewProduct] = useState({ name: '', price: '', description: '', stock: '',imageUrl:'',category:'' });
   const [editingProduct, setEditingProduct] = useState(null);
 
   // Obtener productos
@@ -29,7 +29,7 @@ function InventoryPage() {
       .then(response => response.json())
       .then(data => {
                         setProducts([...products, data]);
-                        setNewProduct({ name: '', price: '', description: '', stock: '' });
+                        setNewProduct({ name: '', price: '', description: '', stock: '',imageUrl:'',category:''});
                     }
             )
       .catch(error => console.error('Error adding product:', error));
@@ -52,7 +52,7 @@ function InventoryPage() {
 
   const handleCancelEditProduct = () => {
     setEditingProduct(null); // Salir del modo de edición
-    setNewProduct({ name: '', price: '', description: '', stock: '' }); // Limpiar los campos
+    setNewProduct({ name: '', price: '', description: '', stock: '',imageUrl:'',category:'' }); // Limpiar los campos
   };
 
   // Guardar cambios en el producto editado
@@ -66,7 +66,7 @@ function InventoryPage() {
       .then(updatedProduct => {
         setProducts(products.map(product => product._id === updatedProduct._id ? updatedProduct : product));
         setEditingProduct(null);
-        setNewProduct({ name: '', price: '', description: '', stock: '' });
+        setNewProduct({ name: '', price: '', description: '', stock: '',imageUrl:'',category:'' });
       })
       .catch(error => console.error('Error updating product:', error));
   };
@@ -80,6 +80,8 @@ function InventoryPage() {
           <input className="form-control mb-2" name="price" value={newProduct.price} onChange={handleInputChange} placeholder="Precio" />
           <input className="form-control mb-2" name="description" value={newProduct.description} onChange={handleInputChange} placeholder="Descripcion" />
           <input className="form-control mb-2" name="stock" value={newProduct.stock} onChange={handleInputChange} placeholder="Stock" />
+          <input className="form-control mb-2" name="category" value={newProduct.category} onChange={handleInputChange} placeholder="Categoria" />
+          <input className="form-control mb-2" name="imageUrl" value={newProduct.imageUrl} onChange={handleInputChange} placeholder="Url de imagen" />
           {editingProduct ? (
             <>
                 <button className="btn btn-primary me-2" onClick={handleSaveEdit}>Guardar Cambios</button>

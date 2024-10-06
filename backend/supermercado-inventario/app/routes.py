@@ -22,7 +22,9 @@ def create_product():
         'name': data['name'],
         'price': data['price'],
         'description': data.get('description', ''),  # Opcional
-        'stock': data['stock']
+        'stock': data['stock'],
+        'imageUrl': data['imageUrl'],
+        'category':data['category']
     }
     result = add_product(new_product)  # Inserta el producto en MongoDB
 
@@ -41,7 +43,9 @@ def update_product_route(product_id):
         'name': product_data['name'],
         'price': product_data['price'],
         'description': product_data.get('description', ''),  # Opcional
-        'stock': product_data['stock']
+        'stock': product_data['stock'],
+        'imageUrl': product_data['imageUrl'],
+        'category':product_data['category']
     }
 
     result = update_product(ObjectId(product_id), new_product)
