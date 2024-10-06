@@ -13,11 +13,15 @@ function CatalogPage() {
     fetch("http://localhost:5000/products")
       .then(response => response.json())
       .then(data => {
-        setProducts(data);
+        if (data && Array.isArray(data)) {
+          setProducts(data);
 
-        // Extraer categorías únicas de los productos
-        const uniqueCategories = [...new Set(data.map(product => product.category))];
-        setCategories(uniqueCategories);
+          // Extraer categorías únicas de los productos
+          const uniqueCategories = [...new Set(data.map(product => product.category))];
+          setCategories(uniqueCategories.filter(Boolean)); // Filtra categorías válidas
+        } else {
+          setCategories([]); // Si no hay productos, poner categorías vacías
+        }
       })
       .catch(error => console.error('Error fetching products:', error));
   }, []);
@@ -38,7 +42,7 @@ function CatalogPage() {
     : products;
 
   return (
-    <div>
+    <div className='m-4 vh-100'>
       <h1 className="centered">Catálogo</h1>
 
       {/* Selector de categoría */}
