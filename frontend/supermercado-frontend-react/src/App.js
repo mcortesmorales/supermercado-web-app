@@ -6,6 +6,7 @@ import './App.css';
 import MyNavbar from './components/Navbar';
 import Home from './pages/Home';
 import Footer from "./components/Footer"
+import AuthPage from './pages/auth-page';
 
 function App() {
   return (
@@ -14,9 +15,10 @@ function App() {
       <MyNavbar />
         <div className="container-flex px-0">
           <Routes>
-          <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/" element={<CatalogPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/iniciar-Sesion" element = {<AuthPage/>}/>
           </Routes>
         </div>
         <Footer/>

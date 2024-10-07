@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/frontend/supermercado-frontend-react/node_modules
+/backend/supermercado-auth/node_modules
 /.pnp
 .pnp.js
 

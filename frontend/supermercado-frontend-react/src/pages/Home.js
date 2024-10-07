@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import ImagenFondo from "../assets/aaa.jpg"
 import "../design/Home.css"
-import Footer from "../components/Footer"
 function Home() {
   return (
   <div className="home w-100 h-100 d-flex align-items-center justify-content-center">
