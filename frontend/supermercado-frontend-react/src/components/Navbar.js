@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import "../Navbar.css"
 import Logo from "../assets/logosuper.png"
-import "./Dropdown"
-import Dropdown from './Dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 

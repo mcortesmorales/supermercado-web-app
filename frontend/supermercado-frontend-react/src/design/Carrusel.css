@@ -1,0 +1,39 @@
+.slick-slider {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .slick-track {
+    display: flex;
+  }
+  
+  .slick-slide {
+    display: inline-block;
+  }
+  
+  .product-item {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .product-item img {
+    max-width: 70%; /* Tamaño más pequeño para las imágenes */
+    align-items: center;
+    height: auto;
+  }
+  
+  .slick-dots {
+    bottom: -30px;
+  }
+  
+  .slick-prev, .slick-next {
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+  }
+  

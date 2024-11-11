@@ -1,7 +1,7 @@
 /* Estilos para el componente ProductList */
 .product-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  grid-template-columns: repeat(4, 1fr); /* 3 columnas */
   gap: 15px; /* Espacio más pequeño entre los productos */
   padding: 0;
   list-style-type: none;

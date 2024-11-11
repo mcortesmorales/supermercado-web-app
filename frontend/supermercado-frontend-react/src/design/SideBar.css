@@ -1,0 +1,55 @@
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;  /* Hidden initially */
+    width: 250px;
+    height: 100%;
+    background-color: #f8f9fa;  /* Claro fondo */
+    transition: 0.3s ease;  /* Smooth transition when opening/closing */
+    padding-top: 20px;
+    padding-left: 20px;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+  }
+  
+  .sidebar.open {
+    left: 0;  /* When open, move to the left */
+  }
+  
+  .sidebar-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .sidebar h1 {
+    color: #343a40;  /* Título en color oscuro */
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-link {
+    color: #495057;  /* Texto claro pero legible */
+    padding: 10px;
+    font-size: 18px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #a6f1a3 /* Fondo gris suave en hover */
+  }
+  
+  .sidebar-icon {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  

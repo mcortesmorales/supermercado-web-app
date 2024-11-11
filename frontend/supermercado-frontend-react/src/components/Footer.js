@@ -1,12 +1,12 @@
 import React from "react";
-import IconsSocial from "../assets/image.png"; // Asegúrate de que la ruta sea correcta
+import IconsSocial from "../assets/image.png"; 
 import "../design/Footer.css";
 
 function Footer() {
   return (
     <div className="footer">
       <div className="contacto">
-        <img src={IconsSocial} alt="Iconos de redes sociales" /> {/* Usa <img> para mostrar la imagen */}
+        <img src={IconsSocial} alt="Iconos de redes sociales" /> 
       </div>
       <p>&copy; Copyright © 2024 Market Corporation</p>
     </div>

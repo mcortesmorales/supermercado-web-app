@@ -1,0 +1,22 @@
+
+.category-button {
+    background-color: #44b15d;  
+    color: white;  
+    padding: 10px 15px;  
+    border: none;
+    border-radius: 8px;  
+    font-size: 18px;  
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;  /* Efectos de transición */
+    margin-left: 50px; 
+  }
+  
+  /* Icono dentro del botón */
+  .category-button .icon {
+    margin-right: 30px;  /* Espacio entre icono y texto */
+  }
+  
+  /* Efecto al pasar el mouse sobre el botón */
+  .category-button:hover {
+    background-color: #218838; 
+  }
