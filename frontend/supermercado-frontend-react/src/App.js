@@ -7,6 +7,7 @@ import MyNavbar from './components/Navbar';
 import Home from './pages/Home';
 import Footer from "./components/Footer"
 import AuthPage from './pages/auth-page';
+import CartPage from './pages/CartPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<CatalogPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
             <Route path="/iniciar-Sesion" element = {<AuthPage/>}/>
+            <Route path="/carrito" element = {<CartPage/>}/>
           </Routes>
         </div>
         <Footer/>

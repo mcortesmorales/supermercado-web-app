@@ -1,14 +1,11 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
-import "../Navbar.css"
-import Logo from "../assets/logosuper.png"
-import "./Dropdown"
-import Dropdown from './Dropdown';
+import "../Navbar.css";
+import Logo from "../assets/logosuper.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container} from 'react-bootstrap';
-
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const MyNavbar = () => {
   return (
@@ -24,8 +21,11 @@ const MyNavbar = () => {
                       <Nav.Link as={Link} to="/home">Inicio</Nav.Link>
                       <Nav.Link as={Link} to="/">Catálogo</Nav.Link>
                       <Nav.Link as={Link} to="/inventory">Gestión de Inventario</Nav.Link>
-                      <Nav.Link className=' ms-2' as={Link} to="/iniciar-sesion">
+                      <Nav.Link as={Link} to="/iniciar-sesion" className="ms-2">
                           <FontAwesomeIcon icon={faUser} style={{ fontSize: '25px' }} />
+                      </Nav.Link>
+                      <Nav.Link as={Link} to="/carrito" className="ms-3">
+                          <FontAwesomeIcon icon={faShoppingCart} style={{ fontSize: '25px' }} />
                       </Nav.Link>
                   </Nav>
               </Navbar.Collapse>
@@ -34,4 +34,4 @@ const MyNavbar = () => {
   );
 };
 
-export default MyNavbar
+export default MyNavbar;

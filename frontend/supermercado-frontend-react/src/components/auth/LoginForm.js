@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const LoginForm = ({ onSwitchToRegister, onSwitchToReset }) => {
-    console.log("LoginForm is rendering");
+const LoginForm = ({ onSwitchToRegister, onSwitchToReset, setUser }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -15,7 +14,10 @@ const LoginForm = ({ onSwitchToRegister, onSwitchToReset }) => {
             
             // Guardar el token en localStorage
             localStorage.setItem('token', response.data.token);
-            
+
+            // Establecer el userId en el contexto
+            setUser(response.data.userId);
+
             // Redirigir o actualizar el estado de la aplicación según sea necesario
             window.location.href = '/protected'; // Cambia esto a la ruta que deseas después del login
         } catch (err) {
@@ -60,4 +62,3 @@ const LoginForm = ({ onSwitchToRegister, onSwitchToReset }) => {
 };
 
 export default LoginForm;
-
