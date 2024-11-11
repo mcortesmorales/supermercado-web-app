@@ -72,7 +72,7 @@ function InventoryPage() {
   };
 
   return (
-    <div className=' m-4 vh-100'>
+    <div className='m-4'>
       <h1>Gestión de Inventario</h1>
       <div className="row mb-4">
         <div className="col-md-6">

@@ -1,16 +1,17 @@
 version: '3'
 services:
   frontend:
-    build: ./frontend/supermercado-frontend-react  # Dockerfile del frontend
+    build: ./frontend/supermercado-frontend-react
     ports:
       - "3000:80"
     depends_on:
       - inventario
       - auth
+      - carrito
     container_name: frontend
 
   inventario:
-    build: ./backend/supermercado-inventario  # Dockerfile del microservicio de inventario
+    build: ./backend/supermercado-inventario
     ports:
       - "5000:5000"
     environment:
@@ -20,28 +21,38 @@ services:
     container_name: inventario
 
   auth:
-    build: ./backend/supermercado-auth  # Dockerfile del microservicio de autenticación
+    build: ./backend/supermercado-auth
     ports:
-      - "4000:4000"  # Cambia a tu puerto preferido
+      - "4000:4000"
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=rootpassword  # Cambia esto a una contraseña segura
+      - MYSQL_PASSWORD=rootpassword
       - MYSQL_DATABASE=auth_db
     depends_on:
       - mysql
     container_name: auth
 
+  carrito:
+    build: ./backend/supermercado-carrito
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/supermarket
+    depends_on:
+      - mongo
+    container_name: carrito
+
   mysql:
-    image: mysql:5.7  # Puedes usar la versión que necesites
+    image: mysql:5.7
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword  # Cambia esto a una contraseña segura
+      - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=auth_db
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql  # Esto asegura que los datos se persistan
+      - mysql-data:/var/lib/mysql
     container_name: mysql
 
   mongo:
@@ -54,4 +65,4 @@ services:
 
 volumes:
   mongo-data:
-  mysql-data:  # Aquí se declara el volumen para MySQL
+  mysql-data:

@@ -11,10 +11,16 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
+            // Registrar al usuario
             const response = await axios.post('http://localhost:3001/register', { username, email, password });
             setSuccess(response.data.message);
             setError('');
-            // Limpiar el formulario después del registro
+            
+            // Crear carrito automáticamente
+            const userId = response.data.user_id; // Asegúrate de que el backend te pase el user_id
+            await axios.post(`http://localhost:5001/${userId}/create`);
+
+            setSuccess('User registered and cart created');
             setUsername('');
             setEmail('');
             setPassword('');
@@ -74,4 +80,3 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 };
 
 export default RegisterForm;
-

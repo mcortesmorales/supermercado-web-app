@@ -23,11 +23,10 @@ function App() {
             <Route path="/products/:productName" element={<ProductPage />} />
             <Route path="/products/:category" element={<CatalogPage />} />
           </Routes>
-        </div>
-        <Footer/>
-      </div>
+          /</div>
+          /</div>
     </Router>
   );
-}
+  }
 
 export default App;
