@@ -14,19 +14,10 @@ const LoginForm = ({ onSwitchToRegister, onSwitchToReset, setUser }) => {
             
             // Guardar el token en localStorage
             localStorage.setItem('token', response.data.token);
-<<<<<<< HEAD
-
-            // Establecer el userId en el contexto
-            setUser(response.data.userId);
-
-            // Redirigir o actualizar el estado de la aplicación según sea necesario
-            window.location.href = '/protected'; // Cambia esto a la ruta que deseas después del login
-=======
             alert('Inicio de sesión exitoso');
             setError('');
             // Establecer el userId en el contexto
             setUser(response.data.userId);
->>>>>>> b3242f1f3237460d341a8ac599b1b32e9c10c0e1
         } catch (err) {
             console.error('Error during login:', err);
             setError(err.response ? err.response.data.message : 'Login failed');
