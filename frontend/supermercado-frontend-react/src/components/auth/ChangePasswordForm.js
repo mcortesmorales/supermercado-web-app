@@ -11,7 +11,7 @@ const ChangePasswordForm = ({ onSwitchToLogin }) => {
     const handleChangePassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/change-password', { email, oldPassword, newPassword });
+            const response = await axios.post('http://localhost:4000/api/change-password', { email, oldPassword, newPassword });
             setSuccess(response.data.message);
             setError('');
         } catch (err) {
