@@ -4,11 +4,12 @@ import axios from 'axios';
 import { useUser } from './UserContext';
 
 const CartPage = () => {
-    const { userId } = useUser()
-    //const userId = '12345'; // Reemplaza esto con el ID real cuando implementes el contexto
+    //const { userId } = useUser()
+    const userId = '12345'; // Reemplaza esto con el ID real cuando implementes el contexto
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
+        console.log(userId)
         if (userId) {
             axios.get(`http://localhost:5001/${userId}`)
                 .then(response => {

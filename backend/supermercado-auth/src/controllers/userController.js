@@ -1,83 +1,70 @@
-// src/controllers/userController.js
-const db = require('../config/db'); // Configuración de la base de datos
-const bcrypt = require('bcrypt'); // Importar bcrypt para manejar contraseñas
+const db = require('../config/db');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-// Función para manejar errores
-const handleError = (res, err, status = 500) => {
-    return res.status(status).json({ message: 'Error del servidor', error: err.message });
+// Registro de usuario
+exports.registerUser = async (username, password, email) => {
+    const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (existingUser.length > 0) throw { message: 'Usuario ya existe' };
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', [username, hashedPassword, email]);
+
+    return { message: 'Usuario registrado exitosamente' };
 };
+
+// Inicio de sesión de usuario
+exports.loginUser = async (email, password) => {
+    const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (results.length === 0) throw { message: 'Usuario no encontrado' };
+
+    const user = results[0];
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw { message: 'Contraseña incorrecta' };
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+    // Devuelve tanto el token como el user_id
+    return { token, userId: user.id };
+};
+
 
 // Obtener perfil de usuario
 exports.getProfile = async (req, res) => {
-    try {
-        const userId = req.user.id; // Acceder a userId desde req.user
-        const [user] = await db.query('SELECT username, email FROM users WHERE id = ?', [userId]);
+    const userId = req.user.id;
+    const [user] = await db.query('SELECT username, name, email, address, phone FROM users WHERE id = ?', [userId]);
 
-        if (!user.length) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+    if (!user.length) throw { message: 'Usuario no encontrado' };
 
-        res.json({ user: user[0] }); // Enviar solo el primer usuario
-    } catch (err) {
-        handleError(res, err);
-    }
+    res.json({ user: user[0] });
 };
 
-exports.updateProfile = async (req, res) => {
-    try {
-        const userId = req.user.id; // Acceder a userId desde req.user
-        const { username, email } = req.body;
+// Actualizar perfil de usuario (nombre de usuario, nombre completo, email, dirección y teléfono)
+exports.updateProfile = async (userId, username, name, email, address, phone) => {
+    const [existingUser] = await db.query('SELECT * FROM users WHERE username = ? AND id != ?', [username, userId]);
+    if (existingUser.length > 0) throw { message: 'El nombre de usuario ya está en uso' };
 
-        // Verificar si el nuevo nombre de usuario ya existe
-        const [existingUser] = await db.query('SELECT * FROM users WHERE username = ? AND id != ?', [username, userId]);
-        if (existingUser.length > 0) {
-            return res.status(400).json({ message: 'El nombre de usuario ya está en uso' });
-        }
-
-        const [result] = await db.query('UPDATE users SET username = ?, email = ? WHERE id = ?', [username, email, userId]);
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-
-        res.json({ message: 'Perfil actualizado exitosamente' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error del servidor', error: err });
-    }
+    await db.query('UPDATE users SET username = ?, name = ?, email = ?, address = ?, phone = ? WHERE id = ?', 
+                   [username, name, email, address, phone, userId]);
+    return { message: 'Perfil actualizado exitosamente' };
 };
-
 
 // Cambiar contraseña
-exports.changePassword = async (req, res) => {
-    try {
-        const userId = req.user.id; // Acceder a userId desde req.user
-        const { currentPassword, newPassword } = req.body;
+exports.changePassword = async (userId, currentPassword, newPassword) => {
+    const [user] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+    if (!user.length) throw { message: 'Usuario no encontrado' };
 
-        // Validación de contraseñas
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({ message: 'La contraseña actual y la nueva son obligatorias.' });
-        }
+    const match = await bcrypt.compare(currentPassword, user[0].password);
+    if (!match) throw { message: 'Contraseña actual incorrecta' };
 
-        // Verificar el usuario
-        const [user] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-        if (!user.length) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await db.query('UPDATE users SET password = ? WHERE id = ?', [hashedNewPassword, userId]);
 
-        // Comparar la contraseña actual
-        const match = await bcrypt.compare(currentPassword, user[0].password);
-        if (!match) {
-            return res.status(401).json({ message: 'Contraseña actual incorrecta' });
-        }
+    return { message: 'Contraseña cambiada exitosamente' };
+};
 
-        // Encriptar la nueva contraseña
-        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-        // Actualizar la contraseña en la base de datos
-        await db.query('UPDATE users SET password = ? WHERE id = ?', [hashedNewPassword, userId]);
-
-        res.json({ message: 'Contraseña cambiada exitosamente' });
-    } catch (err) {
-        handleError(res, err);
-    }
+// Guardar detalles de compra (dirección, teléfono y nombre completo)
+exports.saveUserDetails = async (userId, address, phone) => {
+    await db.query('UPDATE users SET address = ?, phone = ? WHERE id = ?', [address, phone, userId]);
+    return { message: 'Detalles de compra guardados exitosamente' };
 };

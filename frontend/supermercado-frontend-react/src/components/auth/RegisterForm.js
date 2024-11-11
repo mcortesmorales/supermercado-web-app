@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useUser } from '../../pages/UserContext'; // Importa el hook personalizado
 
 const RegisterForm = ({ onSwitchToLogin }) => {
     const [username, setUsername] = useState('');
@@ -8,16 +9,24 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // Obtener el setter del userId desde el contexto
+    const { setUser } = useUser();
+
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             // Registrar al usuario
-            const response = await axios.post('http://localhost:3001/register', { username, email, password });
+            const response = await axios.post('http://localhost:4000/api/register', { username, email, password });
             setSuccess(response.data.message);
             setError('');
+
+            // Obtener el userId desde la respuesta
+            const userId = response.data.userId;
             
+            // Establecer el userId en el contexto
+            setUser(userId);
+
             // Crear carrito automáticamente
-            const userId = response.data.user_id; // Asegúrate de que el backend te pase el user_id
             await axios.post(`http://localhost:5001/${userId}/create`);
 
             setSuccess('User registered and cart created');

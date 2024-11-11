@@ -42,7 +42,7 @@ function CatalogPage() {
     : products;
 
   return (
-    <div className='m-4 vh-100'>
+    <div className='m-4'>
       <h1 className="centered">Catálogo</h1>
 
       {/* Selector de categoría */}

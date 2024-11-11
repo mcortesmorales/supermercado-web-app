@@ -25,10 +25,12 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=rootpassword
-      - MYSQL_DATABASE=auth_db
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=auth_db
+    env_file:
+      - ./backend/supermercado-auth/src/.env  # Ruta correcta del archivo .env
     depends_on:
       - mysql
     container_name: auth
