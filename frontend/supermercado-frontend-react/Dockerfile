@@ -1,5 +1,5 @@
 # Construcción de la aplicación React
-FROM node:16-alpine as build
+FROM node:18
 
 # Establecemos el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -8,22 +8,14 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalamos las dependencias de npm
-RUN npm install
+RUN npm install package.json
 
 # Copiamos el resto de los archivos de la aplicación
 COPY . .
 
-# Construimos la aplicación para producción
-RUN npm run build
+# Habilitar polling para cambios en archivos
+ENV WATCHPACK_POLLING=true
 
-# Servir la aplicación con NGINX
-FROM nginx:alpine
-
-# Copiamos los archivos estáticos generados en la etapa de construcción al directorio de NGINX
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Exponemos el puerto 80 para el servidor NGINX
-EXPOSE 80
-
-# Iniciamos NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Exponer el puerto y arrancar la aplicación
+EXPOSE 3000
+CMD ["npm","start"]
