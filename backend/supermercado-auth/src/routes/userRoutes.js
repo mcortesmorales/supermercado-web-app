@@ -36,6 +36,9 @@ router.post('/login', [
     }
 
     try {
+        console.log(req.body.password);
+        console.log(req.body.email);
+        
         const response = await userController.loginUser(req.body.email, req.body.password);
         res.status(200).json(response);  // Devuelve el token y el user_id en formato JSON
     } catch (err) {
