@@ -3,15 +3,17 @@ import ProductList from '../components/ProductList';
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../design/Button.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThList, faStore, faCheese, faShoppingCart, faAppleAlt, faSoap, faDrumstickBite, faGlassWhiskey, faPaw } from '@fortawesome/free-solid-svg-icons';
-import"../design/SideBar.css"
-
+import { faThList, faStore, faCheese, faShoppingCart, faAppleAlt, faSoap, faPaw } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Sidebar from '../components/SideBar';
 
 function CatalogPage() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,9 +27,9 @@ function CatalogPage() {
 
           // Extraer categorías únicas de los productos
           const uniqueCategories = [...new Set(data.map(product => product.category))];
-          setCategories(uniqueCategories.filter(Boolean)); // Filtra categorías válidas
+          setCategories(uniqueCategories.filter(Boolean));
         } else {
-          setCategories([]); // Si no hay productos, poner categorías vacías
+          setCategories([]);
         }
       })
       .catch(error => console.error('Error fetching products:', error));
@@ -37,13 +39,24 @@ function CatalogPage() {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const category = queryParams.get("category") || '';
-    setSelectedCategory(category);
-  }, [location]);
+    if (category !== selectedCategory) {
+      setSelectedCategory(category);
+    }
+  }, [location, selectedCategory]);
 
-  // Filtrar productos según la categoría seleccionada
-  const filteredProducts = selectedCategory
-    ? products.filter(product => product.category === selectedCategory)
-    : products;
+  // Filtrar productos según la categoría seleccionada y el texto de búsqueda
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Ordenar productos según el precio
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortOrder === 'asc') return a.price - b.price;
+    if (sortOrder === 'desc') return b.price - a.price;
+    return 0;
+  });
 
   // Función para alternar la visibilidad del Sidebar
   const toggleSidebar = () => {
@@ -51,54 +64,71 @@ function CatalogPage() {
   };
 
   return (
-    <div className="m-4 vh-100">
-      <h1 className="centered">Catálogo</h1>
-  
-      <button className="category-button" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faThList} style={{ marginRight: '20px' }} />
-        {isSidebarOpen ? 'Cerrar Categorías' : 'Abrir Categorías'}
+      <div className="m-4 vh-100">
+    <h1 className="centered">Catálogo</h1>
+
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "10px",
+        marginBottom: "20px",
+        padding: "30px 100px",
+      }}
+    >
+      {/* Botón de categorías */}
+      <button className="category-button" onClick={toggleSidebar}Toggle Sidebar>
+        <FontAwesomeIcon icon={faThList} style={{ marginRight: "10px" }} />
+        {isSidebarOpen ? "Cerrar Categorías" : "Abrir Categorías"}
       </button>
-  
-      {/* Barra lateral */}
-      {isSidebarOpen && (
-        <div className="sidebar open">
-          <div className="sidebar-header">
-            <h1>Market</h1>
-          </div>
-          <nav>
-            <a href="/" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faStore} className="sidebar-icon" />
-              Supermercado
-            </a>
-            <a href="/?category=Despensa" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faShoppingCart} className="sidebar-icon" />
-              Despensa
-            </a>
-            <a href="/?category=Lacteos%20y%20Derivados" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faCheese} className="sidebar-icon" />
-              Lácteos
-            </a>
-            <a href="/?category=frutas" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faAppleAlt} className="sidebar-icon" />
-              Frutas y Verduras
-            </a>
-            <a href="/?category=limpieza" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faSoap} className="sidebar-icon" />
-              Limpieza
-            </a>
-            <a href="/?category=mascotas" onClick={toggleSidebar} className="sidebar-link">
-              <FontAwesomeIcon icon={faPaw} className="sidebar-icon" />
-              Mascotas
-            </a>
-            {/* Agregar más categorías según sea necesario */}
-          </nav>
-        </div>
-      )}
+
+      {/* Barra de búsqueda con ícono */}
+      <div
+        style={{
+          position: "relative",
+          width: "600px",
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+        <FontAwesomeIcon
+          icon={faSearch}
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: "#aaa",
+          }}
+        />
+      </div>
+
+      {/* Dropdown box */}
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        className="sort-dropdown"
+      >
+        <option value="">Ordenar por precio</option>
+        <option value="asc">Menor a mayor</option>
+        <option value="desc">Mayor a menor</option>
+      </select>
+    </div>
+    <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+
       {/* Lista de productos */}
-      <ProductList products={filteredProducts} onProductClick={(product) => navigate(`/products/${product.name}`, { state: { product } })} />
+      <ProductList
+        products={sortedProducts}
+        onProductClick={(product) => navigate(`/products/${product.name}`, { state: { product } })}
+      />
     </div>
   );
-  
 }
 
 export default CatalogPage;

@@ -16,14 +16,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         e.preventDefault();
         try {
             // Registrar al usuario
-<<<<<<< HEAD
-            const response = await axios.post('http://localhost:3001/register', { username, email, password });
-            setSuccess(response.data.message);
-            setError('');
-            
-            // Crear carrito automáticamente
-            const userId = response.data.user_id; // Asegúrate de que el backend te pase el user_id
-=======
             const response = await axios.post('http://localhost:4000/api/register', { username, email, password });
             setSuccess(response.data.message);
             setError('');
@@ -35,7 +27,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             setUser(userId);
 
             // Crear carrito automáticamente
->>>>>>> b3242f1f3237460d341a8ac599b1b32e9c10c0e1
             await axios.post(`http://localhost:5001/${userId}/create`);
 
             setSuccess('User registered and cart created');

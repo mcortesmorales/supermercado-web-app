@@ -1,50 +1,70 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStore, faCheese, faShoppingCart, faAppleAlt, faSoap, faDrumstickBite, faGlassWhiskey, faPaw } from '@fortawesome/free-solid-svg-icons';
-import '../design/SideBar.css';  // Asegúrate de tener tu archivo de estilos
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../design/SideBar.css";
+import {
+  faStore,
+  faShoppingCart,
+  faCheese,
+  faAppleAlt,
+  faSoap,
+  faPaw,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="sidebar-header">
-        <h1>Market</h1>
+    isSidebarOpen && (
+      <div className="sidebar open">
+        <div className="sidebar-header">
+          <h1>Market</h1>
+        </div>
+        <nav>
+          <a href="/" onClick={toggleSidebar} className="sidebar-link">
+            <FontAwesomeIcon icon={faStore} className="sidebar-icon" />
+            Supermercado
+          </a>
+          <a
+            href="/?category=Despensa"
+            onClick={toggleSidebar}
+            className="sidebar-link"
+          >
+            <FontAwesomeIcon icon={faShoppingCart} className="sidebar-icon" />
+            Despensa
+          </a>
+          <a
+            href="/?category=Lacteos%20y%20Derivados"
+            onClick={toggleSidebar}
+            className="sidebar-link"
+          >
+            <FontAwesomeIcon icon={faCheese} className="sidebar-icon" />
+            Lácteos
+          </a>
+          <a
+            href="/?category=frutas"
+            onClick={toggleSidebar}
+            className="sidebar-link"
+          >
+            <FontAwesomeIcon icon={faAppleAlt} className="sidebar-icon" />
+            Frutas y Verduras
+          </a>
+          <a
+            href="/?category=limpieza"
+            onClick={toggleSidebar}
+            className="sidebar-link"
+          >
+            <FontAwesomeIcon icon={faSoap} className="sidebar-icon" />
+            Limpieza
+          </a>
+          <a
+            href="/?category=mascotas"
+            onClick={toggleSidebar}
+            className="sidebar-link"
+          >
+            <FontAwesomeIcon icon={faPaw} className="sidebar-icon" />
+            Mascotas
+          </a>
+        </nav>
       </div>
-      <nav className="sidebar-nav">
-        <Link to="/" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faStore} className="sidebar-icon" />
-          Supermercado
-        </Link>
-        <Link to="/lacteos-y-quesos" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faCheese} className="sidebar-icon" />
-          Lácteos y Quesos
-        </Link>
-        <Link to="/Despensa" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faShoppingCart} className="sidebar-icon" />
-          Despensa
-        </Link>
-        <Link to="/frutas" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faAppleAlt} className="sidebar-icon" />
-          Frutas y Verduras
-        </Link>
-        <Link to="/limpieza" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faSoap} className="sidebar-icon" />
-          Limpieza
-        </Link>
-        <Link to="/carne" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faDrumstickBite} className="sidebar-icon" />
-          Carnicería
-        </Link>
-        <Link to="/botilleria" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faGlassWhiskey} className="sidebar-icon" />
-          Botillería
-        </Link>
-        <Link to="/mascotas" onClick={toggleSidebar} className="sidebar-link">
-          <FontAwesomeIcon icon={faPaw} className="sidebar-icon" />
-          Mascotas
-        </Link>
-      </nav>
-    </div>
+    )
   );
 };
 

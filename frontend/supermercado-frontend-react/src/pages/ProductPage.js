@@ -4,10 +4,9 @@ import ProductDetail from '../components/ProductDetail';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate
-
-
-import "../design/Carrusel.css"
+import { useNavigate } from 'react-router-dom';
+import "../design/Carrusel.css";
+import "../design/Table.css";
 
 function ProductDetailPage() {
   const { productName } = useParams();
@@ -37,36 +36,57 @@ function ProductDetailPage() {
     }
   }, [product]);
 
+    // Desplazarse al inicio de la página cuando se carga o se navega a esta página
+    useEffect(() => {
+      window.scrollTo(0, 0); 
+    }, [productName]); 
+  
+
   if (!product) {
     return <div>Cargando...</div>;
   }
 
   const parseNutritionalData = (data) => {
     const rows = data.split('\n');
-    return rows.map((row) => {
+    const parsedData = {};
+
+    rows.forEach((row) => {
       const parts = row.split(':');
       const nutrient = parts[0].trim();
       const value = parts[1].trim();
-      return { nutrient, value };
+
+      const [name, unit, per] = nutrient.split(' (');
+      const key = name.trim();
+
+      if (!parsedData[key]) {
+        parsedData[key] = {};
+      }
+
+      if (per.includes('100g/ml')) {
+        parsedData[key].per100g = value;
+      } else if (per.includes('porción')) {
+        parsedData[key].perServing = value;
+      }
     });
+
+    return parsedData;
   };
 
-  const nutritionalInfo = product.table ? parseNutritionalData(product.table) : [];
+  const nutritionalInfo = product.table ? parseNutritionalData(product.table) : {};
 
   const sliderSettings = {
     infinite: true,
-    autoplay: true,  // Habilitar desplazamiento automático
-    autoplaySpeed: 5000, 
+    autoplay: true,
+    autoplaySpeed: 5000,
     speed: 1000,
-    slidesToShow: 3,  // Mostrar 3 productos
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
-    
     responsive: [
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,  // Mostrar 1 producto en pantallas más pequeñas
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -87,21 +107,22 @@ function ProductDetailPage() {
           {isVisible ? 'Ocultar tabla nutricional' : 'Mostrar tabla nutricional'}
         </button>
         
-        {/* Solo mostrar la tabla si isVisible es true */}
+        {/* Tabla nutricional */}
         {isVisible && (
           <table>
             <thead>
               <tr>
                 <th>Nutriente</th>
-                <th>Por cada 100g/Porción</th>
+                <th>Por cada 100g/ml</th>
+                <th>Por cada porción</th>
               </tr>
             </thead>
             <tbody>
-              {nutritionalInfo.map((item, index) => (
+              {Object.keys(nutritionalInfo).map((key, index) => (
                 <tr key={index}>
-                  <td>{item.nutrient}</td>
-                  <td>{item.valuePer100g}</td>
-                  <td>{item.valuePerServing}</td>
+                  <td>{key}</td>
+                  <td>{nutritionalInfo[key].per100g || '-'}</td>
+                  <td>{nutritionalInfo[key].perServing || '-'}</td>
                 </tr>
               ))}
             </tbody>
@@ -136,7 +157,6 @@ function ProductDetailPage() {
           <p>No hay productos relacionados disponibles.</p>
         )}
       </Slider>
-
     </div>
   );
 }
