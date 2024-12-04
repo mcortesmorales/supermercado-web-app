@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useUser } from '../../pages/UserContext';
+import { Navigate } from 'react-router-dom';
 
-const LoginForm = ({ onSwitchToRegister, onSwitchToReset, setUser }) => {
+
+const LoginForm = ({ onSwitchToRegister, onSwitchToReset}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { setUser } = useUser(); // Accede al contexto
 
     const handleLogin = async (e) => {
         e.preventDefault();
