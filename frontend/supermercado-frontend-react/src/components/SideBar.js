@@ -39,7 +39,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             Lácteos
           </a>
           <a
-            href="/?category=frutas"
+            href="/?category=Frutas%20y%20Verduras"
             onClick={toggleSidebar}
             className="sidebar-link"
           >
@@ -47,7 +47,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             Frutas y Verduras
           </a>
           <a
-            href="/?category=limpieza"
+            href="/?category=Limpieza"
             onClick={toggleSidebar}
             className="sidebar-link"
           >
@@ -55,7 +55,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             Limpieza
           </a>
           <a
-            href="/?category=mascotas"
+            href="/?category=Mascotas"
             onClick={toggleSidebar}
             className="sidebar-link"
           >

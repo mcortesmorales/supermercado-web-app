@@ -5,7 +5,7 @@
   }
   
   table {
-    width: 50%;
+    width: 100%;
     border-collapse: collapse; /* Elimina espacios entre celdas */
     margin-top: 10px;
   }
@@ -31,21 +31,22 @@
   }
   
   .toggle-table-btn {
-    background-color: #64df68; 
+    background-color: #218838; 
     color: white; 
-    padding: 12px 20px; 
+    padding: 10px 15px; 
     font-size: 16px; 
     border: none; 
     border-radius: 25px; 
     cursor: pointer; 
     transition: all 0.3s ease; /* Transición suave para los cambios */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    text-transform: uppercase; 
     font-weight: bold; 
     display: inline-block;
+    margin-left: auto;
+    margin-left: 5px;
   }
   
   .toggle-table-btn:hover {
-    background-color: #1c9720; /* Cambio de color al pasar el ratón */
+    background-color: #145021; /* Cambio de color al pasar el ratón */
   }
   

@@ -46,34 +46,6 @@ function ProductDetailPage() {
     return <div>Cargando...</div>;
   }
 
-  const parseNutritionalData = (data) => {
-    const rows = data.split('\n');
-    const parsedData = {};
-
-    rows.forEach((row) => {
-      const parts = row.split(':');
-      const nutrient = parts[0].trim();
-      const value = parts[1].trim();
-
-      const [name, unit, per] = nutrient.split(' (');
-      const key = name.trim();
-
-      if (!parsedData[key]) {
-        parsedData[key] = {};
-      }
-
-      if (per.includes('100g/ml')) {
-        parsedData[key].per100g = value;
-      } else if (per.includes('porción')) {
-        parsedData[key].perServing = value;
-      }
-    });
-
-    return parsedData;
-  };
-
-  const nutritionalInfo = product.table ? parseNutritionalData(product.table) : {};
-
   const sliderSettings = {
     infinite: true,
     autoplay: true,
@@ -100,35 +72,6 @@ function ProductDetailPage() {
   return (
     <div>
       <ProductDetail product={product} />
-
-      {/* Botón para mostrar/ocultar la tabla nutricional */}
-      <div className="nutritional-table">
-        <button onClick={toggleTableVisibility} className="toggle-table-btn">
-          {isVisible ? 'Ocultar tabla nutricional' : 'Mostrar tabla nutricional'}
-        </button>
-        
-        {/* Tabla nutricional */}
-        {isVisible && (
-          <table>
-            <thead>
-              <tr>
-                <th>Nutriente</th>
-                <th>Por cada 100g/ml</th>
-                <th>Por cada porción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(nutritionalInfo).map((key, index) => (
-                <tr key={index}>
-                  <td>{key}</td>
-                  <td>{nutritionalInfo[key].per100g || '-'}</td>
-                  <td>{nutritionalInfo[key].perServing || '-'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
 
       <h2>También te podría interesar...</h2>
       <Slider {...sliderSettings}>
