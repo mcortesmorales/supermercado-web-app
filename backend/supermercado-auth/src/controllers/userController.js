@@ -2,16 +2,25 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Registro de usuario
 exports.registerUser = async (username, password, email) => {
+    // Verificar si el usuario ya existe
     const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
     if (existingUser.length > 0) throw { message: 'Usuario ya existe' };
 
+    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
-    await db.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', [username, hashedPassword, email]);
 
-    return { message: 'Usuario registrado exitosamente' };
+    // Insertar el usuario y obtener el ID del usuario recién creado
+    const [result] = await db.query(
+        'INSERT INTO users (username, password, email) VALUES (?, ?, ?)', 
+        [username, hashedPassword, email]
+    );
+
+    const userId = result.insertId; // Obtener el ID del usuario insertado
+
+    return { message: 'Usuario registrado exitosamente', userId };
 };
+
 
 // Inicio de sesión de usuario
 exports.loginUser = async (email, password) => {

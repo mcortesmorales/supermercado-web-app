@@ -4,13 +4,13 @@ import "../Navbar.css";
 import Logo from "../assets/logosuper.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-
+import { useUser } from '../pages/UserContext';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const MyNavbar = () => {
     const navigate = useNavigate();  // Para redirigir programáticamente
     const isLoggedIn = localStorage.getItem('token'); // Verifica si hay un token en el localStorage
-
+    const { setUser } = useUser();
     const handleUserClick = () => {
         if (isLoggedIn) {
             navigate('/perfil-nuevo'); // Si está logueado, redirige al perfil
@@ -22,6 +22,7 @@ const MyNavbar = () => {
     const handleLogout = () => {
         // Eliminar el token del localStorage
         localStorage.removeItem('token');
+        setUser(null);
         // Redirigir a la página de inicio de sesión
         navigate('/iniciar-sesion');
     };
@@ -39,17 +40,17 @@ const MyNavbar = () => {
                         <Nav.Link as={Link} to="/home">Inicio</Nav.Link>
                         <Nav.Link as={Link} to="/">Catálogo</Nav.Link>
                         <Nav.Link as={Link} to="/inventory">Gestión de Inventario</Nav.Link>
-                        <Nav.Link as="button" className="ms-2" onClick={handleUserClick}>
-                            <FontAwesomeIcon icon={faUser} style={{ fontSize: '25px' }} />
-                        </Nav.Link>
-                        <Nav.Link as={Link} to="/carrito" className="ms-3">
-                            <FontAwesomeIcon icon={faShoppingCart} style={{ fontSize: '25px' }} />
-                        </Nav.Link>
                         {isLoggedIn && (
                             <Nav.Link onClick={handleLogout} style={{ cursor: 'pointer' }}>
                                 Cerrar Sesión
                             </Nav.Link>
                         )}
+                        <Nav.Link as={Link} to="/carrito" className="ms-3">
+                            <FontAwesomeIcon icon={faShoppingCart} style={{ fontSize: '25px' }} />
+                        </Nav.Link>
+                        <Nav.Link as="button" className="ms-2" onClick={handleUserClick}>
+                            <FontAwesomeIcon icon={faUser} style={{ fontSize: '25px' }} />
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useUser } from '../../pages/UserContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginForm = ({ onSwitchToRegister, onSwitchToReset}) => {
@@ -9,6 +9,7 @@ const LoginForm = ({ onSwitchToRegister, onSwitchToReset}) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { setUser } = useUser(); // Accede al contexto
+    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,6 +23,8 @@ const LoginForm = ({ onSwitchToRegister, onSwitchToReset}) => {
             setError('');
             // Establecer el userId en el contexto
             setUser(response.data.userId);
+            console.log(response.data.userId);
+            navigate("/home");
         } catch (err) {
             console.error('Error during login:', err);
             setError(err.response ? err.response.data.message : 'Login failed');

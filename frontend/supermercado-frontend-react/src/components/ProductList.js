@@ -1,10 +1,13 @@
 import React from 'react';
+import { useUser } from '../pages/UserContext';
 
 function ProductList({ products, onProductClick }) {
 
+  const { userId } = useUser()
+  
   // Esta función maneja la adición al carrito
   const handleAddToCart = (product) => {
-    const userId = '12345'; // Este debe ser el ID del usuario autenticado.
+    
 
     // Enviar la solicitud para agregar el producto al carrito
     fetch(`http://localhost:5001/${userId}/add`, {

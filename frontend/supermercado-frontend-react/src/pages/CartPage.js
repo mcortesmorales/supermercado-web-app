@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Table, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useUser } from './UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-    //const { userId } = useUser()
-    const userId = '12345'; // Reemplaza esto con el ID real cuando implementes el contexto
+    const { userId } = useUser()
     const [cartItems, setCartItems] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log(userId)
@@ -115,7 +116,7 @@ const CartPage = () => {
             <Row className="mt-4">
                 <Col md={{ span: 4, offset: 8 }}>
                     <h4>Total: ${calculateTotal()}</h4>
-                    <Button variant="success" className="w-100 mt-2">
+                    <Button onClick={() => navigate('/payment-page', { state: { total: calculateTotal() } })} variant="success" className="w-100 mt-2">
                         Proceder al Pago
                     </Button>
                 </Col>

@@ -60,3 +60,4 @@ class CartModel:
         {"user_id": user_id, "items._id": item_id},  # Filtro por user_id y el _id del item
         {"$set": {"items.$.quantity": quantity}}  # Actualización de la cantidad del item
     )
+

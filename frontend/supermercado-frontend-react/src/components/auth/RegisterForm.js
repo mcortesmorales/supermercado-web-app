@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useUser } from '../../pages/UserContext'; // Importa el hook personalizado
+import { useUser } from '../../pages/UserContext';
+import { useNavigate } from 'react-router-dom'; 
 
 const RegisterForm = ({ onSwitchToLogin }) => {
     const [username, setUsername] = useState('');
@@ -9,8 +10,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    // Obtener el setter del userId desde el contexto
-    const { setUser } = useUser();
+    const { setUser } = useUser(); // Obtener el setter del contexto
+    const navigate = useNavigate()
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -22,20 +23,30 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 
             // Obtener el userId desde la respuesta
             const userId = response.data.userId;
-            
-            // Establecer el userId en el contexto
-            setUser(userId);
 
-            // Crear carrito automáticamente
+            // Crear el carrito automáticamente
             await axios.post(`http://localhost:5001/${userId}/create`);
 
-            setSuccess('User registered and cart created');
+            // Login automático
+            const loginResponse = await axios.post('http://localhost:4000/api/login', { email, password });
+
+            // Guardar el token en localStorage
+            localStorage.setItem('token', loginResponse.data.token);
+
+            // Establecer el userId en el contexto
+            setUser(loginResponse.data.userId);
+
+            // Resetear los campos del formulario
+            setSuccess('Registro exitoso e inicio de sesión automático');
             setUsername('');
             setEmail('');
             setPassword('');
+
+            navigate("/home");
+
         } catch (err) {
             console.error('Error during registration:', err);
-            setError(err.response ? err.response.data.message : 'Registration failed');
+            setError(err.response ? err.response.data.message : 'Error en el registro');
             setSuccess('');
         }
     };
@@ -46,38 +57,38 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             <form onSubmit={handleRegister} className="bg-light p-4 rounded shadow-sm">
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">Nombre de Usuario</label>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         id="username"
-                        className="form-control" 
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)} 
-                        placeholder="Ingresa tu nombre de usuario" 
-                        required 
+                        className="form-control"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Ingresa tu nombre de usuario"
+                        required
                     />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
-                    <input 
-                        type="email" 
+                    <input
+                        type="email"
                         id="email"
-                        className="form-control" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        placeholder="Ingresa tu email" 
-                        required 
+                        className="form-control"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Ingresa tu email"
+                        required
                     />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Contraseña</label>
-                    <input 
-                        type="password" 
+                    <input
+                        type="password"
                         id="password"
-                        className="form-control" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        placeholder="Ingresa tu contraseña" 
-                        required 
+                        className="form-control"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Ingresa tu contraseña"
+                        required
                     />
                 </div>
                 {error && <div className="alert alert-danger" role="alert">{error}</div>}

@@ -2,6 +2,11 @@
 from flask import request, jsonify
 from app import app
 from app.models import CartModel
+from transbank.webpay.webpay_plus.transaction import Transaction
+
+Transaction.commerce_code = '597055555532'  # Código de comercio para Webpay Plus en entorno de integración
+Transaction.api_key = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C'  # Api Key Secret para pruebas
+Transaction.environment = 'TEST'  # Cambia a 'PRODUCTION' en producción
 
 @app.route('/<user_id>', methods=['GET'])
 def get_cart(user_id):
@@ -52,3 +57,21 @@ def update_quantity(user_id):
         return jsonify({'message': 'Quantity updated successfully'}), 200
     else:
         return jsonify({'error': 'Product not found in cart or invalid quantity'}), 409
+
+@app.route('/api/pay', methods=['POST'])
+def initiate_payment():
+    data = request.get_json()
+    # Crear transacción con Transbank
+    try:
+        transaction = Transaction()
+        response = transaction.create(
+            buy_order=data['buyOrder'],
+            session_id=data['sessionId'],
+            amount=data['amount'],
+            return_url='http://localhost:3000/payment-return'  # URL de retorno
+        )
+        print("Transacción iniciada con éxito, respuesta:", response)  # Log para ver la respuesta
+        return jsonify({"url": response['url'], "token": response['token']})
+    except Exception as e:
+        print(f"Error al crear la transacción: {str(e)}")  # Log del error
+        return jsonify({"error": f"Error al iniciar el pago: {str(e)}"}), 500

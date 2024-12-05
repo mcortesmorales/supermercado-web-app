@@ -1,0 +1,33 @@
+.payment-methods {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.payment-card {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-card img {
+    max-width: 100px;
+    max-height: 60px;
+}
+
+.payment-card:hover {
+    border-color: #007bff;
+}
+
+.payment-card.selected {
+    border-color: #ffc107;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
